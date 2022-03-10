@@ -1,7 +1,7 @@
 
 
 def get_la_info():
-    result = "Learning Account 정산\n" \
+    result = ":moneybag: Learning Account 정산\n" \
              "* 프로젝트/계정 : 역량개발담당/전사교육비\n" \
              "* 정산구분 : ‘Learning Account’ 앞 체크\n" \
              "* 적요 : 사용내용 작성 (예 : 세미나 등록비, IT 도서 구입비)\n" \

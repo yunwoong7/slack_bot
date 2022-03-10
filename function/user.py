@@ -20,7 +20,8 @@ def say_hello(user):
 
 
 def get_member():
-    result = "이메일\n" \
+    result = ":information_source: CheckMate 멤버는 총 4명입니다.\n" \
+             "이메일\n" \
              "> 백승환 : ssennom0@naver.com, sh.baek@sk.com, keeper100@gmail.com\n" \
              "> 조경민 : km78cho@gmail.com, silverte@sk.com\n" \
              "> 최기형 : crossorbit@gmail.com, kihchoi@sk.com\n" \
