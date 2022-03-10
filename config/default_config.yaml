@@ -1,4 +1,4 @@
-token: "xoxb-2887071092226-3199466925556-FDMzqQPK0Eb8kHiyHqLsWc4V"
+token: "<< Your Token >>"
 
 # Questions
 questions:
@@ -15,9 +15,12 @@ questions:
     synonym: [ "현재", "현재 시간", "now", "time" ]
     func: "get_time()"
 
-  test:
-    synonym: [ ]
-    func: "get_test(ts)"
+  L/A 정산:
+    synonym: ["L/A", "Learning Account", "Learning Account 정산", "러닝어카운트 정상", "러닝어카운트"]
+    func: "get_la_info()"
 
+  멤버:
+    synonym: ["member", "우리", "우리 정보", "이메일", "email"]
+    func: "get_member()"
 
 

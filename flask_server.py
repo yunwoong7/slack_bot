@@ -12,74 +12,6 @@ app = Flask(__name__)
 client = WebClient(token)
 
 
-# def get_day_of_week():
-#     weekday_list = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일']
-#
-#     weekday = weekday_list[datetime.today().weekday()]
-#     date = datetime.today().strftime("%Y년 %m월 %d일")
-#     result = '{}({})'.format(date, weekday)
-#     return result
-#
-# def get_time():
-#     return datetime.today().strftime("%H시 %M분 %S초")
-#
-#
-# def get_answer(text):
-#     trim_text = text.replace(" ", "")
-#
-#     answer_dict = {
-#         '안녕': '안녕하세요. CheckMate입니다.',
-#         '요일': ':calendar: 오늘은 {}입니다'.format(get_day_of_week()),
-#         '시간': ':clock9: 현재 시간은 {}입니다.'.format(get_time()),
-#     }
-#
-#     if trim_text == '' or None:
-#         return "알 수 없는 질의입니다. 답변을 드릴 수 없습니다."
-#     elif trim_text in answer_dict.keys():
-#         return answer_dict[trim_text]
-#     else:
-#         for key in answer_dict.keys():  # 키에서 먼저 찾고
-#             if key.find(trim_text) != -1:
-#                 return "연관 단어 [" + key + "]에 대한 답변입니다.\n" + answer_dict[key]
-#
-#         for key in answer_dict.keys():  # 키가 없으면 본문에 검색
-#             if answer_dict[key].find(text[1:]) != -1:
-#                 return "질문과 가장 유사한 질문 [" + key + "]에 대한 답변이에요.\n"+ answer_dict[key]
-#
-#     return text + "은(는) 없는 질문입니다."
-
-def get_question(query_word):
-    question_dict = {}
-    _config = get_config()
-    try:
-        question_dict = _config['questions'][query_word]
-    except KeyError:
-        try:
-            for question in _config['questions']:
-                if query_word in _config['questions'][question]['synonym']:
-                    question_dict = _config['questions'][question]
-        except KeyError:
-            pass
-
-    return question_dict
-
-
-def get_answer(query_word, user, ts):
-    answer = ''
-    question_dict = get_question(query_word)
-
-    if question_dict:
-        func = question_dict['func']
-
-        if func is None:
-            answer = question_dict['answer']
-        else:
-            answer = eval('{}'.format(func))
-    else:
-        answer = "알 수 없는 질의입니다. 답변을 드릴 수 없습니다."
-
-    return answer
-
 def event_handler(event_type, slack_event):
     channel = slack_event["event"]["channel"]
     string_slack_event = str(slack_event)
@@ -88,7 +20,9 @@ def event_handler(event_type, slack_event):
         try:
             if event_type == 'app_mention':
                 query_word = slack_event['event']['blocks'][0]['elements'][0]['elements'][1]['text']
-                answer = get_answer(query_word)
+                user = slack_event['event']['user']
+                ts = slack_event['event']['ts']
+                answer = get_answer(query_word, user, ts)
                 result = client.chat_postMessage(channel=channel,
                                                  text=answer)
             return make_response("ok", 200, )
@@ -119,8 +53,9 @@ def event_handler(event_type, slack_event):
 @app.route('/', methods=['POST'])
 def hello_there():
     slack_event = json.loads(request.data)
+
     if "challenge" in slack_event:
-        return make_response(slack_event["challenge"], 200, {"content_type": "application/json"})
+        return make_response({"challenge": slack_event["challenge"]}, 200, {"content_type": "application/json"})
 
     if "event" in slack_event:
         event_type = slack_event["event"]["type"]
