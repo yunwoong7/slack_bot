@@ -1,0 +1,23 @@
+token: "xoxb-2887071092226-3199466925556-FDMzqQPK0Eb8kHiyHqLsWc4V"
+
+# Questions
+questions:
+  안녕:
+    synonym: ["안녕하세요", "hi", "hello"]
+    answer: "안녕하세요. CheckMate입니다."
+    func: "say_hello(user)"
+
+  요일:
+    synonym: ["날짜", "오늘"]
+    func: "get_day_of_week()"
+
+  시간:
+    synonym: [ "현재", "현재 시간", "now", "time" ]
+    func: "get_time()"
+
+  test:
+    synonym: [ ]
+    func: "get_test(ts)"
+
+
+
